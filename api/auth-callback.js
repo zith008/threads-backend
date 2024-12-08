@@ -11,7 +11,8 @@ export default async (req, res) => {
 
   const APP_ID = process.env.APP_ID;
   const APP_SECRET = process.env.APP_SECRET;
-  const REDIRECT_URI = "https://threadly-one.vercel.app/api/auth-callback"; // your custom scheme redirect
+  const REDIRECT_URI =
+    "https://threads-backend-nine.vercel.app/api/auth-callback"; // your custom scheme redirect
   const GRAPH_API_VERSION = "v17.0";
 
   try {
