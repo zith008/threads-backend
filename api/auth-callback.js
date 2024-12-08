@@ -1,4 +1,3 @@
-// api/auth-callback.js
 import axios from "axios";
 
 export default async (req, res) => {
@@ -12,7 +11,7 @@ export default async (req, res) => {
   const APP_ID = process.env.APP_ID;
   const APP_SECRET = process.env.APP_SECRET;
   const REDIRECT_URI =
-    "https://threads-backend-nine.vercel.app/api/auth-callback"; // your custom scheme redirect
+    "https://threads-backend-nine.vercel.app/api/auth-callback"; // Redirect URI registered with Threads API
   const GRAPH_API_VERSION = "v17.0";
 
   try {
@@ -35,23 +34,12 @@ export default async (req, res) => {
       return res.status(500).send("No access token returned from Threads API");
     }
 
-    // Return HTML that deep-links back into your app
-    const html = `<!DOCTYPE html> 
-    <html> 
-    <head>
-    <title>Redirecting...</title>
-    </head> 
-    <body> 
-    <p>Redirecting back to the app, please wait...</p> 
-    <script> 
-    // Redirect the user back to the app with the token
-    const accessToken = "${encodeURIComponent(access_token)}";
-    window.location = "https://threads-backend-nine.vercel.app/redirect?token=" + accessToken; 
-    </script> 
-    </body> 
-    </html>`;
-    res.setHeader("Content-Type", "text/html; charset=UTF-8");
-    return res.status(200).send(html);
+    // Redirect directly to the app with the custom scheme
+    const APP_SCHEME = "myapp://redirect"; // Replace 'threadsapp' with your app's custom URI scheme
+    const redirectUrl = `${APP_SCHEME}?token=${encodeURIComponent(
+      access_token
+    )}`;
+    return res.redirect(redirectUrl);
   } catch (error) {
     console.error(
       "Error exchanging code for token:",
