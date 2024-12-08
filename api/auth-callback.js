@@ -36,9 +36,20 @@ export default async (req, res) => {
     }
 
     // Return HTML that deep-links back into your app
-    const html = `<!DOCTYPE html> <html> <head><title>Redirecting...</title></head> <body> <p>Redirecting back to the app, please wait...</p> <script> window.location = "myapp://redirect?token=${encodeURIComponent(
-      access_token
-    )}"; </script> </body> </html>`;
+    const html = `<!DOCTYPE html> 
+    <html> 
+    <head>
+    <title>Redirecting...</title>
+    </head> 
+    <body> 
+    <p>Redirecting back to the app, please wait...</p> 
+    <script> 
+    // Redirect the user back to the app with the token
+    const accessToken = "${encodeURIComponent(access_token)}";
+    window.location = "https://threads-backend-nine.vercel.app/redirect?token=" + accessToken; 
+    </script> 
+    </body> 
+    </html>`;
     res.setHeader("Content-Type", "text/html; charset=UTF-8");
     return res.status(200).send(html);
   } catch (error) {
