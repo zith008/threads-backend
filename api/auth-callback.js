@@ -1,21 +1,19 @@
-import axios from "axios/dist/node/axios.cjs";
-
 export default async (req, res) => {
   const { query } = req;
   const code = query.code;
 
   if (!code) {
+    console.error("No code provided in query params");
     return res.status(400).send("No code provided");
   }
 
   const APP_ID = process.env.APP_ID;
   const APP_SECRET = process.env.APP_SECRET;
   const REDIRECT_URI =
-    "https://threads-backend-nine.vercel.app/api/auth-callback"; // Redirect URI registered with Threads API
+    "https://threads-backend-nine.vercel.app/api/auth-callback";
   const GRAPH_API_VERSION = "v17.0";
 
   try {
-    // Exchange code for access_token
     const tokenUrl = `https://graph.facebook.com/${GRAPH_API_VERSION}/oauth/access_token`;
     const data = new URLSearchParams({
       client_id: APP_ID,
@@ -30,16 +28,18 @@ export default async (req, res) => {
     });
 
     const { access_token } = tokenResponse.data;
+
     if (!access_token) {
-      return res.status(500).send("No access token returned from Threads API");
+      console.error("No access token returned:", tokenResponse.data);
+      return res.status(500).send("Failed to retrieve access token");
     }
 
-    // Redirect directly to the app with the custom scheme
-    const APP_SCHEME = "myapp://redirect"; // Replace 'threadsapp' with your app's custom URI scheme
-    const redirectUrl = `${APP_SCHEME}?token=${encodeURIComponent(
-      access_token
-    )}`;
-    return res.redirect(redirectUrl);
+    console.log("Access Token:", access_token);
+
+    const APP_SCHEME = "threadsapp://redirect";
+    return res.redirect(
+      `${APP_SCHEME}?token=${encodeURIComponent(access_token)}`
+    );
   } catch (error) {
     console.error(
       "Error exchanging code for token:",
