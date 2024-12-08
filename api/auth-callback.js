@@ -1,3 +1,5 @@
+import axios from "axios/dist/node/axios.cjs";
+
 export default async (req, res) => {
   const { query } = req;
   const code = query.code;
