@@ -38,7 +38,7 @@ export default async (req, res) => {
 
     console.log("Access Token:", access_token);
 
-    const APP_SCHEME = "threadsapp://redirect";
+    const APP_SCHEME = "myapp://redirect";
     return res.redirect(
       `${APP_SCHEME}?token=${encodeURIComponent(access_token)}`
     );
