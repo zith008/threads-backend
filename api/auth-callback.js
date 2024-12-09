@@ -13,10 +13,10 @@ export default async (req, res) => {
   const APP_SECRET = process.env.APP_SECRET;
   const REDIRECT_URI =
     "https://threads-backend-nine.vercel.app/api/auth-callback";
-  const GRAPH_API_VERSION = "v17.0";
+  const GRAPH_API_VERSION = "v1.0";
 
   try {
-    const tokenUrl = `https://graph.facebook.com/${GRAPH_API_VERSION}/oauth/access_token`;
+    const tokenUrl = `https://graph.threads.net/${GRAPH_API_VERSION}/oauth/access_token`;
     const data = new URLSearchParams({
       client_id: APP_ID,
       client_secret: APP_SECRET,
